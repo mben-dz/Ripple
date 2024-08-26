@@ -1,0 +1,71 @@
+unit Main.View;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls,
+  jpeg;
+
+type
+  TMainView = class(TForm)
+    Img_Movie: TImage;
+    Timer_Ripple: TTimer;
+    procedure FormCreate(Sender: TObject);
+    procedure Timer_RippleTimer(Sender: TObject);
+    procedure FormMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
+  private
+//    fRipple: TWaterEffect;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+// Functions
+const
+  RippleDll = 'Ripple.dll';
+
+function WaterInit(bitmap:Integer):Integer; stdcall; external RippleDll;
+function WaterMouseAction(hdc:Integer; sx,sy,mx,my,half,deep:Integer):Integer; stdcall; external RippleDll;
+function WaterTimer(hdc:Integer; sx,sy:Integer):Integer; stdcall; external RippleDll;
+
+var
+  MainView: TMainView;
+
+implementation
+
+
+
+{$R *.dfm}
+
+procedure TMainView.FormCreate(Sender: TObject);
+begin
+//  fRipple := TWaterEffect.Create(Self.Canvas.Handle, 10, 10);
+//  fRipple.Init(Img_Movie.Picture.Bitmap.Handle);
+//  Timer_Ripple.Enabled := True;
+  WaterInit(Img_Movie.Picture.Bitmap.Handle);
+end;
+
+procedure TMainView.Timer_RippleTimer(Sender: TObject);
+begin
+//  fRipple.Timer;
+  WaterTimer(Self.Canvas.Handle,10,10);
+end;
+
+procedure TMainView.FormMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+//  fRipple.MouseAction(X, Y, 30, 5000);
+  WaterMouseAction(Self.Canvas.Handle,10,10,X,Y,30,5000);
+end;
+
+procedure TMainView.FormMouseMove(Sender: TObject; Shift: TShiftState; X,
+  Y: Integer);
+begin
+//  fRipple.MouseAction(X, Y, 10, 100);
+  WaterMouseAction(Self.Canvas.Handle,10,10,X,Y,10,100);
+end;
+
+end.

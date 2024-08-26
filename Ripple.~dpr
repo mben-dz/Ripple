@@ -1,0 +1,15 @@
+program Ripple;
+
+uses
+  Forms,
+  API.RippleEffects in 'API\Ripple\API.RippleEffects.pas',
+  API.RippleHeader in 'API\Ripple\API.RippleHeader.pas',
+  Main.View in 'Main.View.pas' {Form1};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.
